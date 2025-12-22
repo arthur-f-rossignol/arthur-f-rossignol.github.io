@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. [Your Name] - Researcher</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a3a52;
+            --accent: #c17a3f;
+            --text: #2c2c2c;
+            --text-light: #6b6b6b;
+            --bg: #fdfcfa;
+            --bg-secondary: #f5f3f0;
+            --border: #d4cec4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(90deg, var(--bg-secondary) 1px, transparent 1px),
+                linear-gradient(0deg, var(--bg-secondary) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 0 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(193, 122, 63, 0.15) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            font-weight: 300;
+            opacity: 0.9;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+        }
+
+        .affiliation {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.4s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            border-bottom: 3px solid var(--accent);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            display: flex;
+            gap: 0;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 1.2rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            font-family: 'IBM Plex Sans', sans-serif;
+            letter-spacing: 0.02em;
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+            background: var(--bg-secondary);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tab-btn.active::after {
+            transform: scaleX(1);
+        }
+
+        /* Main Content */
+        main {
+            padding: 4rem 0;
+            min-height: 60vh;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Home Section */
+        .profile-section {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .profile-image {
+            width: 250px;
+            height: 250px;
+            border-radius: 3px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            color: white;
+            font-weight: 300;
+            box-shadow: 0 10px 30px rgba(26, 58, 82, 0.2);
+            border: 4px solid white;
+        }
+
+        .profile-details h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .profile-details p {
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+
+        .contact-info {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent);
+        }
+
+        .contact-info h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .contact-item {
+            margin-bottom: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact-item::before {
+            content: '▸';
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* CV Section */
+        .cv-section {
+            margin-bottom: 3rem;
+        }
+
+        .cv-section h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.5rem;
+        }
+
+        .cv-section h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin: 2rem 0 1rem;
+        }
+
+        .cv-entry {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            border-left: 2px solid var(--border);
+            position: relative;
+        }
+
+        .cv-entry::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .cv-entry-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+
+        .cv-entry-org {
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 0.3rem;
+        }
+
+        .cv-entry-date {
+            font-size: 0.9rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .cv-entry-desc {
+            margin-top: 0.5rem;
+            color: var(--text-light);
+        }
+
+        /* Publications Section */
+        .publication {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background: white;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .publication:hover {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transform: translateX(5px);
+        }
+
+        .pub-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.7rem;
+            line-height: 1.4;
+        }
+
+        .pub-authors {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .pub-venue {
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .pub-year {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.2rem 0.7rem;
+            border-radius: 3px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .pub-links {
+            margin-top: 1rem;
+        }
+
+        .pub-link {
+            display: inline-block;
+            margin-right: 1rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .pub-link:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+
+        /* Research Areas Section */
+        .research-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .research-card {
+            background: white;
+            padding: 2rem;
+            border-top: 4px solid var(--accent);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .research-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .research-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .research-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .research-card h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .research-card p {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        .research-keywords {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .keyword {
+            background: var(--bg-secondary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            color: var(--primary);
+            border: 1px solid var(--border);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profile-section {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .profile-image {
+                margin: 0 auto;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-container {
+                flex-wrap: wrap;
+            }
+
+            .tab-btn {
+                padding: 1rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .research-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <h1>Dr. [Your Name]</h1>
+            <div class="subtitle">Researcher in [Your Field]</div>
+            <div class="affiliation">[Your University/Institution]</div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <button class="tab-btn active" data-tab="home">Home</button>
+            <button class="tab-btn" data-tab="cv">Curriculum Vitae</button>
+            <button class="tab-btn" data-tab="publications">Publications</button>
+            <button class="tab-btn" data-tab="research">Research Areas</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Home Tab -->
+        <div id="home" class="tab-content active">
+            <div class="profile-section">
+                <div class="profile-image">
+                    <!-- Replace with your initials or add an actual image -->
+                    YN
+                </div>
+                <div class="profile-details">
+                    <h2>About Me</h2>
+                    <p>
+                        Welcome to my research page. I am a [Position] at [Institution], where I lead research in [your primary research area]. 
+                        My work focuses on [brief description of your research focus and its impact].
+                    </p>
+                    <p>
+                        I received my Ph.D. in [Field] from [University] in [Year], where I was advised by [Advisor Name]. 
+                        Prior to that, I completed my [Bachelor's/Master's] in [Field] at [University].
+                    </p>
+                    <p>
+                        My research has been published in leading venues including [list a few top venues/journals], 
+                        and I have received [mention any notable awards or recognition].
+                    </p>
+                </div>
+            </div>
+
+            <div class="contact-info">
+                <h3>Contact Information</h3>
+                <div class="contact-item">Email: your.email@institution.edu</div>
+                <div class="contact-item">Office: Building Name, Room ###</div>
+                <div class="contact-item">GitHub: github.com/yourusername</div>
+                <div class="contact-item">Scholar: Google Scholar Profile</div>
+                <div class="contact-item">Twitter/X: @yourhandle</div>
+            </div>
+        </div>
+
+        <!-- CV Tab -->
+        <div id="cv" class="tab-content">
+            <div class="cv-section">
+                <h2>Curriculum Vitae</h2>
+
+                <h3>Education</h3>
+                <div class="cv-entry">
+                    <div class="cv-entry-title">Ph.D. in [Field]</div>
+                    <div class="cv-entry-org">[University Name]</div>
+                    <div class="cv-entry-date">Year - Year</div>
+                    <div class="cv-entry-desc">Dissertation: "[Your Dissertation Title]"<br>Advisor: [Advisor Name]</div>
+                </div>
+                <div class="cv-entry">
+                    <div class="cv-entry-title">M.S. in [Field]</div>
+                    <div class="cv-entry-org">[University Name]</div>
+                    <div class="cv-entry-date">Year - Year</div>
+                </div>
+                <div class="cv-entry">
+                    <div class="cv-entry-title">B.S. in [Field]</div>
+                    <div class="cv-entry-org">[University Name]</div>
+                    <div class="cv-entry-date">Year - Year</div>
+                </div>
+
+                <h3>Professional Experience</h3>
+                <div class="cv-entry">
+                    <div class="cv-entry-title">[Current Position]</div>
+                    <div class="cv-entry-org">[Institution/Company]</div>
+                    <div class="cv-entry-date">Year - Present</div>
+                    <div class="cv-entry-desc">Brief description of your role and responsibilities.</div>
+                </div>
+                <div class="cv-entry">
+                    <div class="cv-entry-title">[Previous Position]</div>
+                    <div class="cv-entry-org">[Institution/Company]</div>
+                    <div class="cv-entry-date">Year - Year</div>
+                    <div class="cv-entry-desc">Brief description of your role and responsibilities.</div>
+                </div>
+
+                <h3>Honors & Awards</h3>
+                <div class="cv-entry">
+                    <div class="cv-entry-title">[Award Name]</div>
+                    <div class="cv-entry-org">[Awarding Organization]</div>
+                    <div class="cv-entry-date">Year</div>
+                </div>
+                <div class="cv-entry">
+                    <div class="cv-entry-title">[Award Name]</div>
+                    <div class="cv-entry-org">[Awarding Organization]</div>
+                    <div class="cv-entry-date">Year</div>
+                </div>
+
+                <h3>Teaching</h3>
+                <div class="cv-entry">
+                    <div class="cv-entry-title">[Course Code]: [Course Name]</div>
+                    <div class="cv-entry-org">[Institution]</div>
+                    <div class="cv-entry-date">Semester Year</div>
+                </div>
+                <div class="cv-entry">
+                    <div class="cv-entry-title">[Course Code]: [Course Name]</div>
+                    <div class="cv-entry-org">[Institution]</div>
+                    <div class="cv-entry-date">Semester Year</div>
+                </div>
+
+                <h3>Service</h3>
+                <div class="cv-entry">
+                    <div class="cv-entry-title">Program Committee Member</div>
+                    <div class="cv-entry-org">[Conference Name]</div>
+                    <div class="cv-entry-date">Year</div>
+                </div>
+                <div class="cv-entry">
+                    <div class="cv-entry-title">Journal Reviewer</div>
+                    <div class="cv-entry-org">[Journal Names]</div>
+                    <div class="cv-entry-date">Year - Present</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Publications Tab -->
+        <div id="publications" class="tab-content">
+            <div class="cv-section">
+                <h2>Publications</h2>
+
+                <h3>Journal Articles</h3>
+                <div class="publication">
+                    <div class="pub-title">Your Paper Title: Investigating Important Research Question</div>
+                    <div class="pub-authors"><strong>Your Name</strong>, Co-Author 1, Co-Author 2</div>
+                    <div class="pub-venue">Journal Name, Vol. X, No. Y</div>
+                    <span class="pub-year">2024</span>
+                    <div class="pub-links">
+                        <a href="#" class="pub-link">[PDF]</a>
+                        <a href="#" class="pub-link">[DOI]</a>
+                        <a href="#" class="pub-link">[Code]</a>
+                    </div>
+                </div>
+
+                <div class="publication">
+                    <div class="pub-title">Another Research Paper: Novel Approaches to Complex Problems</div>
+                    <div class="pub-authors">Co-Author 1, <strong>Your Name</strong>, Co-Author 2</div>
+                    <div class="pub-venue">Journal Name, Vol. X, No. Y</div>
+                    <span class="pub-year">2023</span>
+                    <div class="pub-links">
+                        <a href="#" class="pub-link">[PDF]</a>
+                        <a href="#" class="pub-link">[DOI]</a>
+                    </div>
+                </div>
+
+                <h3>Conference Papers</h3>
+                <div class="publication">
+                    <div class="pub-title">Conference Paper Title: Advancing the State of the Art</div>
+                    <div class="pub-authors"><strong>Your Name</strong>, Co-Author 1, Co-Author 2, Co-Author 3</div>
+                    <div class="pub-venue">Proceedings of the International Conference on [Topic] (CONF'24)</div>
+                    <span class="pub-year">2024</span>
+                    <div class="pub-links">
+                        <a href="#" class="pub-link">[PDF]</a>
+                        <a href="#" class="pub-link">[Slides]</a>
+                        <a href="#" class="pub-link">[Code]</a>
+                        <a href="#" class="pub-link">[Video]</a>
+                    </div>
+                </div>
+
+                <div class="publication">
+                    <div class="pub-title">Previous Conference Work: Building on Foundational Concepts</div>
+                    <div class="pub-authors">Co-Author 1, <strong>Your Name</strong></div>
+                    <div class="pub-venue">Proceedings of [Conference Name] (CONF'23)</div>
+                    <span class="pub-year">2023</span>
+                    <div class="pub-links">
+                        <a href="#" class="pub-link">[PDF]</a>
+                        <a href="#" class="pub-link">[Poster]</a>
+                    </div>
+                </div>
+
+                <h3>Preprints & Under Review</h3>
+                <div class="publication">
+                    <div class="pub-title">Recent Work: Exploring New Directions in Research</div>
+                    <div class="pub-authors"><strong>Your Name</strong>, Co-Author 1, Co-Author 2</div>
+                    <div class="pub-venue">arXiv preprint arXiv:XXXX.XXXXX</div>
+                    <span class="pub-year">2024</span>
+                    <div class="pub-links">
+                        <a href="#" class="pub-link">[arXiv]</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Research Areas Tab -->
+        <div id="research" class="tab-content">
+            <div class="cv-section">
+                <h2>Research Areas</h2>
+                <p style="margin-bottom: 2rem; font-size: 1.1rem; color: var(--text-light);">
+                    My research spans multiple interconnected areas, with a focus on [overarching theme]. 
+                    Below are the primary domains of my work:
+                </p>
+
+                <div class="research-grid">
+                    <div class="research-card">
+                        <h3>Research Area One</h3>
+                        <p>
+                            Detailed description of your first research area. Explain the key problems you're addressing, 
+                            your approach, and the impact of your work. Include specific techniques or methodologies you employ.
+                        </p>
+                        <div class="research-keywords">
+                            <span class="keyword">Keyword 1</span>
+                            <span class="keyword">Keyword 2</span>
+                            <span class="keyword">Keyword 3</span>
+                        </div>
+                    </div>
+
+                    <div class="research-card">
+                        <h3>Research Area Two</h3>
+                        <p>
+                            Description of your second research area. Focus on what makes this work unique and important. 
+                            Discuss how it relates to broader challenges in your field and what new insights your research provides.
+                        </p>
+                        <div class="research-keywords">
+                            <span class="keyword">Keyword 4</span>
+                            <span class="keyword">Keyword 5</span>
+                            <span class="keyword">Keyword 6</span>
+                        </div>
+                    </div>
+
+                    <div class="research-card">
+                        <h3>Research Area Three</h3>
+                        <p>
+                            Overview of your third research area. Highlight the interdisciplinary nature of your work if applicable. 
+                            Mention collaborations, applications, or real-world impact of your research in this area.
+                        </p>
+                        <div class="research-keywords">
+                            <span class="keyword">Keyword 7</span>
+                            <span class="keyword">Keyword 8</span>
+                            <span class="keyword">Keyword 9</span>
+                        </div>
+                    </div>
+
+                    <div class="research-card">
+                        <h3>Research Area Four</h3>
+                        <p>
+                            Description of your fourth research area. Explain how this connects to your other work and contributes 
+                            to your overall research program. Discuss future directions and open questions you're pursuing.
+                        </p>
+                        <div class="research-keywords">
+                            <span class="keyword">Keyword 10</span>
+                            <span class="keyword">Keyword 11</span>
+                            <span class="keyword">Keyword 12</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 [Your Name]. All rights reserved.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Last updated: December 2024</p>
+        </div>
+    </footer>
+
+    <script>
+        // Tab functionality
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.dataset.tab;
+
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to clicked button and corresponding content
+                button.classList.add('active');
+                document.getElementById(targetTab).classList.add('active');
+
+                // Smooth scroll to top of content
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Smooth reveal animation for cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.research-card, .publication').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
