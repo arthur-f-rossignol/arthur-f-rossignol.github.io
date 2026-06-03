@@ -4,16 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arthur F. Rossignol</title>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #1a3a52;
-            --accent: #c17a3f;
-            --text: #2c2c2c;
-            --text-light: #6b6b6b;
-            --bg: #fdfcfa;
-            --bg-secondary: #f5f3f0;
-            --border: #d4cec4;
+            --primary: #0f3a4a;       /* deep ocean teal */
+            --primary-deep: #082734;  /* abyss */
+            --accent: #2c8a8f;        /* shallow lagoon */
+            --accent-soft: #7fb3b3;   /* sea-foam */
+            --text: #1f2a30;
+            --text-light: #5a6b73;
+            --bg: #f7fafa;            /* foam white */
+            --bg-secondary: #e8f0f1;  /* tidepool */
+            --border: #c9d8da;
         }
 
         * {
@@ -23,14 +27,37 @@
         }
 
         body {
-            font-family: 'IBM Plex Sans', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: var(--bg);
             color: var(--text);
             line-height: 1.7;
             overflow-x: hidden;
+            font-feature-settings: 'ss01', 'cv02', 'cv11';
         }
 
-        /* Background pattern */
+        /* French academic convention: surnames with a full capital initial
+           followed by small capitals (Rossignol, Gosselin, …).
+           The small caps are scaled up for legibility, while the leading
+           capital is reverted to the surrounding cap-height so it matches
+           other capitals in the running text. */
+        .surname,
+        .pub-authors .surname,
+        .pub-authors strong .surname {
+            font-variant: small-caps;            /* legacy */
+            font-variant-caps: small-caps;       /* modern */
+            font-feature-settings: 'smcp' 1;
+            font-size: 1.18em;
+            letter-spacing: 0.04em;
+            display: inline-block;
+            text-transform: none;
+        }
+
+        .surname::first-letter {
+            font-size: 0.847em; /* = 1 / 1.18, restores parent cap-height */
+            letter-spacing: 0;
+        }
+
+        /* Subtle aquatic background — soft horizontal currents */
         body::before {
             content: '';
             position: fixed;
@@ -38,57 +65,118 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: 
-                linear-gradient(90deg, var(--bg-secondary) 1px, transparent 1px),
-                linear-gradient(0deg, var(--bg-secondary) 1px, transparent 1px);
-            background-size: 60px 60px;
-            opacity: 0.3;
+            background:
+                radial-gradient(ellipse 1200px 400px at 20% 0%, rgba(44, 138, 143, 0.06), transparent 60%),
+                radial-gradient(ellipse 900px 300px at 80% 100%, rgba(15, 58, 74, 0.05), transparent 60%),
+                repeating-linear-gradient(0deg, transparent 0, transparent 78px, rgba(15, 58, 74, 0.025) 78px, rgba(15, 58, 74, 0.025) 79px);
             z-index: -1;
+            pointer-events: none;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 880px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding-left: 1.75rem;
+            padding-right: 1.75rem;
         }
 
-        /* Header */
+        /* Header — deep water column */
         header {
-            background: var(--primary);
+            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-deep) 100%);
             color: white;
-            padding: 3rem 0 2rem;
+            padding: 2.5rem 0 4.5rem;
             position: relative;
             overflow: hidden;
         }
 
+        /* Faint caustics — slow drifting highlights, like light on water */
         header::before {
             content: '';
             position: absolute;
-            top: -50%;
+            top: -40%;
             right: -10%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(193, 122, 63, 0.15) 0%, transparent 70%);
-            animation: float 20s ease-in-out infinite;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(127, 179, 179, 0.18) 0%, transparent 65%);
+            animation: drift 28s ease-in-out infinite;
+            pointer-events: none;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(30px, -30px) rotate(120deg); }
-            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(44, 138, 143, 0.12) 0%, transparent 70%);
+            animation: drift 34s ease-in-out infinite reverse;
+            pointer-events: none;
         }
+
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(40px, -25px); }
+        }
+
+        .header-wave {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 36px;
+            display: block;
+            z-index: 2;
+        }
+
+        .header-wave .wave-back { fill: var(--bg); opacity: 0.5; }
+        .header-wave .wave-front { fill: var(--bg); }
 
         .header-content {
             position: relative;
             z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 2rem;
+        }
+
+        .header-text {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .header-social {
+            display: flex;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            align-items: center;
+            margin-top: 0.25rem;
+        }
+
+        .header-social .social-link {
+            color: rgba(255, 255, 255, 0.85);
+            width: 30px;
+            height: 30px;
+        }
+
+        .header-social .social-link:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .header-social .social-link svg {
+            width: 22px;
+            height: 22px;
         }
 
         h1 {
-            font-family: 'Crimson Pro', serif;
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.02em;
+            font-family: 'Inter', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            letter-spacing: -0.025em;
             opacity: 0;
             animation: fadeInUp 0.8s ease forwards;
         }
@@ -126,11 +214,11 @@
         /* Navigation */
         nav {
             background: white;
-            border-bottom: 3px solid var(--accent);
+            border-bottom: 2px solid var(--accent);
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 12px rgba(15, 58, 74, 0.06);
         }
 
         .nav-container {
@@ -142,15 +230,15 @@
         .tab-btn {
             background: none;
             border: none;
-            padding: 1.2rem 2.5rem;
-            font-size: 1rem;
+            padding: 1rem 1.75rem;
+            font-size: 0.9rem;
             font-weight: 500;
             color: var(--text-light);
             cursor: pointer;
             position: relative;
             transition: all 0.3s ease;
-            font-family: 'IBM Plex Sans', sans-serif;
-            letter-spacing: 0.02em;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.01em;
         }
 
         .tab-btn::after {
@@ -181,7 +269,7 @@
 
         /* Main Content */
         main {
-            padding: 4rem 0;
+            padding: 2.5rem 0 4rem;
             min-height: 60vh;
         }
 
@@ -208,66 +296,225 @@
         /* Home Section */
         .profile-section {
             display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 3rem;
-            margin-bottom: 3rem;
+            grid-template-columns: 180px 1fr;
+            gap: 2.25rem;
+            margin-bottom: 2.5rem;
+            align-items: start;
         }
 
         .profile-image {
-            width: 250px;
-            height: 250px;
-            border-radius: 3px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 6rem;
-            color: white;
-            font-weight: 300;
-            box-shadow: 0 10px 30px rgba(26, 58, 82, 0.2);
-            border: 4px solid white;
+            width: 180px;
+            height: 180px;
+            border-radius: 2px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: var(--bg-secondary);
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .profile-details h2 {
-            font-family: 'Crimson Pro', serif;
-            font-size: 2rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            letter-spacing: -0.015em;
             color: var(--primary);
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid var(--accent);
-            padding-bottom: 0.5rem;
-            display: inline-block;
+            margin-bottom: 1.1rem;
         }
 
         .profile-details p {
-            margin-bottom: 1rem;
-            font-size: 1.05rem;
+            margin-bottom: 0.9rem;
+            font-size: 0.97rem;
+            line-height: 1.65;
+            color: var(--text);
+        }
+
+        .profile-details a {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s ease;
+        }
+
+        .profile-details a:hover {
+            border-bottom-color: var(--accent);
         }
 
         .contact-info {
             margin-top: 2rem;
-            padding: 1.5rem;
-            background: var(--bg-secondary);
-            border-left: 4px solid var(--accent);
+            padding: 1.25rem 0 0 0;
+            background: transparent;
+            border: none;
+            border-top: 1px solid var(--border);
+            text-align: center;
         }
 
         .contact-info h3 {
-            font-family: 'Crimson Pro', serif;
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+            color: var(--accent);
         }
 
         .contact-item {
-            margin-bottom: 0.7rem;
+            font-size: 0.93rem;
+            color: var(--text);
+        }
+
+        /* Affiliations row (bottom of Home tab) */
+        .affiliations {
+            margin-top: 3rem;
+            padding-top: 1.75rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .affiliations h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            text-align: center;
+        }
+
+        .affiliations-row {
             display: flex;
             align-items: center;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .affiliation-logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            text-decoration: none;
+            color: var(--text-light);
+        }
+
+        .affiliation-logo:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+
+        .affiliation-logo img {
+            max-height: 110px;
+            max-width: 240px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            filter: grayscale(100%);
+            transition: filter 0.25s ease;
+        }
+
+        .affiliation-logo:hover img {
+            filter: grayscale(0%);
+        }
+
+        /* Inline logo next to a CV education / position entry */
+        .cv-entry {
+            position: relative;
+        }
+
+        .cv-entry-logo {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 42px;
+            width: auto;
+            max-width: 90px;
+            object-fit: contain;
+            opacity: 0.85;
+        }
+
+        .cv-entry-logo--lg {
+            height: 60px;
+            max-width: 120px;
+        }
+
+        /* Container when an entry has multiple institution logos */
+        .cv-entry-logos {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .cv-entry-logos img {
+            height: 42px;
+            width: auto;
+            max-width: 90px;
+            object-fit: contain;
+            opacity: 0.85;
+        }
+
+        .cv-entry-with-logo {
+            padding-right: 110px;
+        }
+
+        .cv-entry-with-logo--wide {
+            padding-right: 240px;
+        }
+
+        .cv-entry-with-logo--lg {
+            padding-right: 140px;
+        }
+
+        /* Social media icon row */
+        .social-links {
+            display: flex;
+            gap: 0.85rem;
+            margin-top: 1rem;
+            align-items: center;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            color: var(--text-light);
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .social-link:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .social-link svg {
+            width: 22px;
+            height: 22px;
+            display: block;
+        }
+
+        .contact-item {
+            margin-bottom: 0.2rem;
+            line-height: 1.45;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             gap: 0.5rem;
         }
 
         .contact-item::before {
-            content: '▸';
-            color: var(--accent);
-            font-weight: bold;
+            content: none;
         }
 
         /* CV Section */
@@ -276,196 +523,189 @@
         }
 
         .cv-section h2 {
-            font-family: 'Crimson Pro', serif;
-            font-size: 2.2rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.85rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
             color: var(--primary);
-            margin-bottom: 1.5rem;
-            border-bottom: 3px solid var(--accent);
-            padding-bottom: 0.5rem;
+            margin-bottom: 1.75rem;
+            padding-bottom: 0.6rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
         }
 
         .cv-section h3 {
-            font-family: 'Crimson Pro', serif;
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin: 2rem 0 1rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin: 2.5rem 0 1.1rem;
         }
 
         .cv-entry {
-            margin-bottom: 1.5rem;
-            padding-left: 1.5rem;
-            border-left: 2px solid var(--border);
-            position: relative;
+            margin-bottom: 1.1rem;
+            padding-left: 0;
         }
 
-        .cv-entry::before {
-            content: '';
-            position: absolute;
-            left: -6px;
-            top: 6px;
-            width: 10px;
-            height: 10px;
-            background: var(--accent);
-            border-radius: 50%;
+        .cv-entry-date {
+            display: block;
+            font-size: 0.82rem;
+            color: var(--accent);
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            font-variant-numeric: tabular-nums;
+            margin-bottom: 0.15rem;
+            text-transform: uppercase;
         }
 
         .cv-entry-title {
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 0.97rem;
             color: var(--primary);
+            line-height: 1.4;
         }
 
         .cv-entry-org {
             color: var(--text-light);
             font-style: italic;
-            margin-bottom: 0.3rem;
-        }
-
-        .cv-entry-date {
-            font-size: 0.9rem;
-            color: var(--accent);
-            font-weight: 500;
+            font-size: 0.92rem;
+            margin-top: 0.1rem;
         }
 
         .cv-entry-desc {
-            margin-top: 0.5rem;
-            color: var(--text-light);
+            margin-top: 0.35rem;
+            font-size: 0.9rem;
+            color: var(--text);
+            line-height: 1.6;
         }
 
-        /* Publications Section */
+        /* Publications — classical academic list */
         .publication {
-            margin-bottom: 2.5rem;
-            padding: 1.5rem;
-            background: white;
-            border-left: 4px solid var(--accent);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
+            margin-bottom: 1.4rem;
+            padding: 0 0 1.2rem 0;
+            border-bottom: 1px solid var(--border);
         }
 
-        .publication:hover {
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transform: translateX(5px);
+        .publication:last-child {
+            border-bottom: none;
         }
 
         .pub-title {
-            font-family: 'Crimson Pro', serif;
-            font-size: 1.4rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--primary);
-            margin-bottom: 0.7rem;
-            line-height: 1.4;
+            margin-bottom: 0.25rem;
+            line-height: 1.45;
         }
 
         .pub-authors {
             color: var(--text);
-            margin-bottom: 0.5rem;
+            font-size: 0.93rem;
+            margin-bottom: 0.2rem;
         }
 
         .pub-venue {
             color: var(--text-light);
             font-style: italic;
-            margin-bottom: 0.5rem;
+            font-size: 0.93rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .pub-venue .straight {
+            font-style: normal;
         }
 
         .pub-year {
-            display: inline-block;
-            background: var(--accent);
-            color: white;
-            padding: 0.2rem 0.7rem;
-            border-radius: 3px;
-            font-size: 0.9rem;
-            font-weight: 500;
+            display: inline;
+            background: none;
+            color: var(--accent);
+            padding: 0;
+            font-size: 0.93rem;
+            font-weight: 600;
+            font-style: normal;
         }
 
         .pub-links {
-            margin-top: 1rem;
+            margin-top: 0.35rem;
+            font-size: 0.9rem;
         }
 
         .pub-link {
-            display: inline-block;
-            margin-right: 1rem;
-            color: var(--primary);
+            display: inline;
+            margin-right: 0.75rem;
+            color: var(--accent);
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s ease;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s ease;
         }
 
         .pub-link:hover {
-            color: var(--accent);
-            text-decoration: underline;
+            border-bottom-color: var(--accent);
         }
 
-        /* Research Areas Section */
+        /* Research Areas — flat academic blocks */
         .research-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+            display: block;
+            margin-top: 1.5rem;
         }
 
         .research-card {
-            background: white;
-            padding: 2rem;
-            border-top: 4px solid var(--accent);
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            background: transparent;
+            padding: 0 0 1.5rem 0;
+            margin-bottom: 1.5rem;
+            border: none;
+            border-bottom: 1px solid var(--border);
         }
 
-        .research-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent), var(--primary));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
-        }
-
-        .research-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-        }
-
-        .research-card:hover::before {
-            transform: scaleX(1);
+        .research-card:last-child {
+            border-bottom: none;
         }
 
         .research-card h3 {
-            font-family: 'Crimson Pro', serif;
-            font-size: 1.6rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
             color: var(--primary);
-            margin-bottom: 1rem;
+            margin-bottom: 0.6rem;
         }
 
         .research-card p {
-            color: var(--text-light);
-            line-height: 1.7;
+            color: var(--text);
+            line-height: 1.65;
+            font-size: 0.95rem;
         }
 
         .research-keywords {
-            margin-top: 1rem;
+            margin-top: 0.7rem;
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
 
         .keyword {
-            background: var(--bg-secondary);
-            padding: 0.3rem 0.8rem;
-            border-radius: 3px;
-            font-size: 0.85rem;
-            color: var(--primary);
-            border: 1px solid var(--border);
+            background: transparent;
+            padding: 0.15rem 0;
+            border-radius: 0;
+            font-size: 0.82rem;
+            font-weight: 400;
+            color: var(--accent);
+            border: none;
+            font-style: italic;
+        }
+
+        .keyword:not(:last-child)::after {
+            content: ' \00b7';
+            margin-left: 0.3rem;
+            color: var(--text-light);
         }
 
         /* Footer */
         footer {
-            background: var(--primary);
+            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-deep) 100%);
             color: white;
             text-align: center;
             padding: 2rem 0;
@@ -509,18 +749,50 @@
 <body>
     <header>
         <div class="container header-content">
-            <h1>Arthur F. Rossignol</h1>
-            <div class="subtitle">PhD candidate in Community Ecology and Biostatistics</div>
-            <div class="affiliation">EFNO (INRAE)</div>
+            <div class="header-text">
+                <h1>Arthur F. <span class="surname">Rossignol</span></h1>
+                <div class="subtitle">PhD candidate in Community Ecology and Biostatistics</div>
+                <div class="affiliation">UR Écosystèmes forestiers (EFNO) • INRAE</div>
+            </div>
+            <div class="header-social">
+                <a href="mailto:arthur.f.rossignol@gmail.com" class="social-link" aria-label="Email" title="Send email">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="M3 6.5l9 6.5 9-6.5"/></svg>
+                </a>
+                <a href="https://github.com/arthur-f-rossignol" class="social-link" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                </a>
+                <a href="https://orcid.org/0009-0000-1494-377X" class="social-link" target="_blank" rel="noopener" aria-label="ORCID" title="ORCID">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947 0 .525-.422.947-.947.947a.95.95 0 01-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.025-5.325 5.025h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-4.097-3.722h-2.222z"/></svg>
+                </a>
+                <a href="https://scholar.google.com/citations?user=vL0TiSoAAAAJ&amp;hl=fr" class="social-link" target="_blank" rel="noopener" aria-label="Google Scholar" title="Google Scholar">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg>
+                </a>
+                <a href="https://www.researchgate.net/profile/Arthur-Rossignol-2" class="social-link" target="_blank" rel="noopener" aria-label="ResearchGate" title="ResearchGate">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><text x="0.5" y="22.5" font-family="'Times New Roman', Georgia, serif" font-size="25" font-weight="500" fill="currentColor">R</text><text x="14" y="11" font-family="'Times New Roman', Georgia, serif" font-size="13" font-weight="500" fill="currentColor">G</text></svg>
+                </a>
+                <a href="https://cv.hal.science/arthur-f-rossignol" class="social-link" target="_blank" rel="noopener" aria-label="HAL" title="HAL (Hyper Articles en Ligne)">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="1.5" y="3" width="21" height="18" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><text x="12" y="15.6" font-family="Inter, Helvetica, sans-serif" font-size="8.2" font-weight="700" text-anchor="middle" fill="currentColor" letter-spacing="0.2">HAL</text></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/a-rossignol/" class="social-link" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                </a>
+            </div>
         </div>
+        <svg class="header-wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+            <path class="wave-back" d="M0,30 C240,55 480,5 720,30 C960,55 1200,5 1440,30 L1440,60 L0,60 Z"/>
+            <path class="wave-front" d="M0,40 C240,60 480,20 720,40 C960,60 1200,20 1440,40 L1440,60 L0,60 Z"/>
+        </svg>
     </header>
 
     <nav>
         <div class="nav-container">
             <button class="tab-btn active" data-tab="home">Home</button>
-            <button class="tab-btn" data-tab="research">Research Areas</button>
+            <button class="tab-btn" data-tab="research" hidden>Research</button>
             <button class="tab-btn" data-tab="publications">Publications</button>
-            <button class="tab-btn" data-tab="cv">Curriculum Vitae</button>
+            <button class="tab-btn" data-tab="communications">Communications</button>
+            <button class="tab-btn" data-tab="packages">Packages</button>
+            <button class="tab-btn" data-tab="cv">CV</button>
+            <button class="tab-btn" data-tab="blog">Blog</button>
         </div>
     </nav>
 
@@ -529,8 +801,7 @@
         <div id="home" class="tab-content active">
             <div class="profile-section">
                 <div class="profile-image">
-                    <!-- Replace with your initials or add an actual image -->
-                    YN
+                    <img src="profile.jpg" alt="Arthur F. Rossignol" />
                 </div>
                 
                 <div class="profile-details">
@@ -539,7 +810,7 @@
                         I am a French civil servant engineer as a member of the ‘Corps des IPEF’, which is a top-class corps of civil servants under the French Ministries of Agriculture and Ecological Transition. I graduated from École polytechnique and the University Paris-Saclay in France. My current research interests include theoretical ecology, ecological modeling, biostatistics, forest ecology, and natural risk assessment.
                     </p>
                     <p>
-                        In September 2025, I started a PhD in the EFNO research unit (INRAE) in Nogent-sur-Vernisson (France) under the supervision of Dr. Frédéric GOSSELIN. The PhD project aims to study the relationship between saproxylic biodiversity and deadwood metrics in a forest using advanced statistical tools, including SDMs and JSDMs. As a permanent civil servant engineer, I am funded by the French Ministry of Agriculture during the preparation of my doctoral thesis.
+                        In September 2025, I started a PhD in the UR Écosystèmes forestiers (EFNO) research unit at INRAE in Nogent-sur-Vernisson (France) under the supervision of Dr. Frédéric <span class="surname">Gosselin</span>. The PhD project aims to study the relationship between saproxylic biodiversity and deadwood metrics in a forest using advanced statistical tools, including SDMs and JSDMs. As a permanent civil servant engineer, I am funded by the French Ministry of Agriculture during the preparation of my doctoral thesis.
                     </p>
                     <p>
                         I am also a French Navy Reserve officer, working a few weeks per year at the SHOM (Brest), where I focus on bioluminescence in the oceans. Moreover, in my spare time, I enjoy studying the sociology of the French administrative elites and the French ‘Grands corps de l'État’.
@@ -552,47 +823,75 @@
 
             <div class="contact-info">
                 <h3>Contact Information</h3>
-                <div class="contact-item">Email: arthur.f.rossignol@gmail.com</div>
-                <div class="contact-item">Office: EFNO, INRAE, Nogent-sur-Vernisson</div>
-                <div class="contact-item">GitHub: github.com/arthur-f-rossignol</div>
+                <div class="contact-item">arthur[dot]f[dot]rossignol[at]gmail[dot]com</div>
+                <div class="contact-item">arthur[dot]rossignol[at]inrae[dot]fr</div>
+                <div class="contact-item">arthur[dot]rossignol[at]agroparistech[dot]fr</div>
+                <div class="contact-item">UR Écosystèmes forestiers (EFNO) – INRAE – Val de Loire, 311 Chemin de la Grande Métairie, Domaine des Barres, 45290 Nogent-sur-Vernisson (France).</div>
+            </div>
+
+            <div class="affiliations">
+                <h3>Affiliations</h3>
+                <div class="affiliations-row">
+                    <a href="https://efno.val-de-loire.hub.inrae.fr" class="affiliation-logo" target="_blank" rel="noopener" title="UR Écosystèmes forestiers (EFNO)">
+                        <img src="logos/efno.png" alt="EFNO" />
+                    </a>
+                    <a href="https://www.inrae.fr" class="affiliation-logo" target="_blank" rel="noopener" title="INRAE">
+                        <img src="logos/inrae.png" alt="INRAE" />
+                    </a>
+                    <a href="https://www.agroparistech.fr" class="affiliation-logo" target="_blank" rel="noopener" title="AgroParisTech">
+                        <img src="logos/agroparistech.png" alt="AgroParisTech" />
+                    </a>
+                </div>
             </div>
         </div>
 
         <!-- CV Tab -->
         <div id="cv" class="tab-content">
             <div class="cv-section">
-                <h2>Curriculum Vitae</h2>
+                <h2>CV</h2>
 
                 <h3>Positions</h3>
-                <div class="cv-entry">
-                    <div class="cv-entry-title">Engineer Civil Servant (‘Corps des IPEF’)</div>
+                <div class="cv-entry cv-entry-with-logo cv-entry-with-logo--lg">
+                    <img class="cv-entry-logo cv-entry-logo--lg" src="logos/ministere-agriculture.png" alt="French Ministry of Agriculture" style="height: 72px; max-width: 145px;" />
+                    <div class="cv-entry-title">Engineer Civil Servant (‘State Engineer of the Bridges, Waters and Forests’)</div>
                     <div class="cv-entry-org">French Ministry of Agriculture</div>
                     <div class="cv-entry-date">2025 - Present</div>
                 </div>
-                <div class="cv-entry">
+                <div class="cv-entry cv-entry-with-logo cv-entry-with-logo--lg">
+                    <img class="cv-entry-logo cv-entry-logo--lg" src="logos/ministere-environnement.png" alt="French Ministry of Environment" />
                     <div class="cv-entry-title">Engineer Civil Servant Trainee</div>
                     <div class="cv-entry-org">French Ministry of Environment</div>
                     <div class="cv-entry-date">2023 - 2025</div>
                 </div>
 
                 <h3>Education</h3>
-                <div class="cv-entry">
+                <div class="cv-entry cv-entry-with-logo cv-entry-with-logo--wide">
+                    <div class="cv-entry-logos">
+                        <img src="logos/inrae.png" alt="INRAE" style="height: 32px; max-width: 70px;" />
+                        <img src="logos/orleans.png" alt="Université d'Orléans" />
+                    </div>
                     <div class="cv-entry-title">PhD candidate</div>
                     <div class="cv-entry-org">INRAE & Université d'Orléans</div>
                     <div class="cv-entry-date">2025 - 2028</div>
-                    <div class="cv-entry-desc">Dissertation: "Methodological Improvements for Statistical (Joint) Species Distribution Models Applied to the Study of Relationships Between Saproxylic Biodiversity and Deadwood Metrics in French Forests"<br>Advisor: Dr. Frédéric Gosselin</div>
+                    <div class="cv-entry-desc">Dissertation: "Methodological Improvements for Statistical (Joint) Species Distribution Models Applied to the Study of Relationships Between Saproxylic Biodiversity and Deadwood Metrics in French Forests"<br>Advisor: Dr. Frédéric <span class="surname">Gosselin</span></div>
                 </div>
-                <div class="cv-entry">
+                <div class="cv-entry cv-entry-with-logo cv-entry-with-logo--wide">
+                    <div class="cv-entry-logos">
+                        <img src="logos/agroparistech.png" alt="AgroParisTech" />
+                        <img src="logos/enpc.png" alt="ENPC" style="height: 75px; max-width: 155px;" />
+                    </div>
                     <div class="cv-entry-title">Executive Master (public administration)</div>
                     <div class="cv-entry-org">AgroParisTech (Palaiseau, France) & ENPC (Champs-sur-Marne, France)</div>
                     <div class="cv-entry-date">2025</div>
                 </div>
-                <div class="cv-entry">
+                <div class="cv-entry cv-entry-with-logo">
+                    <img class="cv-entry-logo" src="logos/paris-saclay.png" alt="Université Paris-Saclay" />
                     <div class="cv-entry-title">Master's degree (conservation ecology & ecological modeling)</div>
                     <div class="cv-entry-org">Faculty of Sciences, University Paris-Saclay (Orsay, France)</div>
                     <div class="cv-entry-date">2024</div>
                 </div>
-                <div class="cv-entry">
+                <div class="cv-entry cv-entry-with-logo cv-entry-with-logo--lg">
+                    <img class="cv-entry-logo cv-entry-logo--lg" src="logos/polytechnique.png" alt="École polytechnique" />
                     <div class="cv-entry-title">Master's degree & French engineer's degree (chemistry & biology)</div>
                     <div class="cv-entry-org">École polytechnique, IP Paris (Palaiseau, France)</div>
                     <div class="cv-entry-date">2023</div>
@@ -610,29 +909,36 @@
                     <div class="cv-entry-date">2020</div>
                 </div>
 
-                <h3>Teaching</h3>
-                <div class="cv-entry">
+                <h3 hidden>Teaching</h3>
+                <div class="cv-entry" hidden>
                     <div class="cv-entry-title">[Course Code]: [Course Name]</div>
                     <div class="cv-entry-org">[Institution]</div>
                     <div class="cv-entry-date">Semester Year</div>
                 </div>
-                <div class="cv-entry">
+                <div class="cv-entry" hidden>
                     <div class="cv-entry-title">[Course Code]: [Course Name]</div>
                     <div class="cv-entry-org">[Institution]</div>
                     <div class="cv-entry-date">Semester Year</div>
                 </div>
 
                 <h3>Service</h3>
-                <div class="cv-entry">
+                <div class="cv-entry" hidden>
                     <div class="cv-entry-title">Program Committee Member</div>
                     <div class="cv-entry-org">[Conference Name]</div>
                     <div class="cv-entry-date">Year</div>
                 </div>
                 <div class="cv-entry">
                     <div class="cv-entry-title">Journal Reviewer</div>
-                    <div class="cv-entry-org">[Journal Names]</div>
-                    <div class="cv-entry-date">Year - Present</div>
+                    <div class="cv-entry-org">PCI Ecology · Journal of Applied Ecology · Ecological Applications</div>
+                    <div class="cv-entry-date">2025 – Present</div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Blog Tab -->
+        <div id="blog" class="tab-content">
+            <div class="cv-section">
+                <h2>Blog</h2>
             </div>
         </div>
 
@@ -643,61 +949,211 @@
 
                 <h3>Journal Articles</h3>
                 <div class="publication">
-                    <div class="pub-title">Your Paper Title: Investigating Important Research Question</div>
-                    <div class="pub-authors"><strong>Your Name</strong>, Co-Author 1, Co-Author 2</div>
-                    <div class="pub-venue">Journal Name, Vol. X, No. Y</div>
-                    <span class="pub-year">2024</span>
+                    <div class="pub-title">Synthesis of substituted cyclic amines from protected amino acids using oxidative decarboxylation and alkylation</div>
+                    <div class="pub-authors">D. <span class="surname">Corbisiero</span>, <strong>A. F. <span class="surname">Rossignol</span></strong>, F. <span class="surname">Calogero</span>, A. <span class="surname">Gualandi</span>, E. <span class="surname">Pinosa</span>, L. <span class="surname">Sensoli</span>, P. <span class="surname">Ronchi</span>, P. G. <span class="surname">Cozzi</span></div>
+                    <div class="pub-venue">Asian Journal of Organic Chemistry<span class="straight">, </span>15<span class="straight">(2), e70319</span></div>
+                    <span class="pub-year">2026</span>
                     <div class="pub-links">
-                        <a href="#" class="pub-link">[PDF]</a>
-                        <a href="#" class="pub-link">[DOI]</a>
-                        <a href="#" class="pub-link">[Code]</a>
+                        <a href="pdf/2026-ajoc.pdf" class="pub-link" target="_blank" rel="noopener">[PDF]</a>
+                        <a href="https://doi.org/10.1002/ajoc.70319" class="pub-link" target="_blank" rel="noopener">[DOI]</a>
+                        <a href="peer-review/2026-ajoc.pdf" class="pub-link" target="_blank" rel="noopener">[Peer-Review]</a>
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[Code]</a>
                     </div>
                 </div>
 
                 <div class="publication">
-                    <div class="pub-title">Another Research Paper: Novel Approaches to Complex Problems</div>
-                    <div class="pub-authors">Co-Author 1, <strong>Your Name</strong>, Co-Author 2</div>
-                    <div class="pub-venue">Journal Name, Vol. X, No. Y</div>
-                    <span class="pub-year">2023</span>
+                    <div class="pub-title">Stable Meisenheimer complexes as powerful photoreductants readily obtained from aza-hetero aromatic compounds</div>
+                    <div class="pub-authors">F. <span class="surname">Calogero</span>, L. <span class="surname">Wilczek</span>, E. <span class="surname">Pinosa</span>, A. <span class="surname">Gualandi</span>, R. <span class="surname">Dorta</span>, A. <span class="surname">Herrera</span>, Y. <span class="surname">Dai</span>, <strong>A. <span class="surname">Rossignol</span></strong>, F. <span class="surname">Negri</span>, Z. <span class="surname">Ziani</span>, A. <span class="surname">Fermi</span>, P. <span class="surname">Ceroni</span>, P. G. <span class="surname">Cozzi</span></div>
+                    <div class="pub-venue">Angewandte Chemie<span class="straight">, </span>136<span class="straight">(44), e202411074</span></div>
+                    <span class="pub-year">2024</span>
                     <div class="pub-links">
-                        <a href="#" class="pub-link">[PDF]</a>
-                        <a href="#" class="pub-link">[DOI]</a>
+                        <a href="pdf/2024-angew.pdf" class="pub-link" target="_blank" rel="noopener">[PDF]</a>
+                        <a href="https://doi.org/10.1002/ange.202411074" class="pub-link" target="_blank" rel="noopener">[DOI]</a>
+                        <a href="peer-review/2024-angew.pdf" class="pub-link" target="_blank" rel="noopener">[Peer-Review]</a>
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[Code]</a>
+                    </div>
+                </div>
+
+                <div class="publication">
+                    <div class="pub-title">Vers une nouvelle approche quantitative pour l'évaluation de l'aléa de chute de blocs</div>
+                    <div class="pub-authors"><strong>A. <span class="surname">Rossignol</span></strong>, R. <span class="surname">Martin</span>, F. <span class="surname">Bourrier</span></div>
+                    <div class="pub-venue">Revue Française de Géotechnique<span class="straight">, </span>179<span class="straight">(2)</span></div>
+                    <span class="pub-year">2024</span>
+                    <div class="pub-links">
+                        <a href="pdf/2024-rfg.pdf" class="pub-link" target="_blank" rel="noopener">[PDF]</a>
+                        <a href="https://doi.org/10.1051/geotech/2024016" class="pub-link" target="_blank" rel="noopener">[DOI]</a>
+                        <a href="peer-review/2024-rfg.pdf" class="pub-link" target="_blank" rel="noopener">[Peer-Review]</a>
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[Code]</a>
                     </div>
                 </div>
 
                 <h3>Conference Papers</h3>
                 <div class="publication">
-                    <div class="pub-title">Conference Paper Title: Advancing the State of the Art</div>
-                    <div class="pub-authors"><strong>Your Name</strong>, Co-Author 1, Co-Author 2, Co-Author 3</div>
-                    <div class="pub-venue">Proceedings of the International Conference on [Topic] (CONF'24)</div>
+                    <div class="pub-title">Towards a novel quantitative approach for rockfall hazard assessment</div>
+                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong>, R. <span class="surname">Martin</span>, F. <span class="surname">Bourrier</span></div>
+                    <div class="pub-venue"><span class="straight">Proceedings of the International Symposium on Landslides (ISL) 2024, Chambéry (France)</span></div>
                     <span class="pub-year">2024</span>
                     <div class="pub-links">
-                        <a href="#" class="pub-link">[PDF]</a>
-                        <a href="#" class="pub-link">[Slides]</a>
-                        <a href="#" class="pub-link">[Code]</a>
-                        <a href="#" class="pub-link">[Video]</a>
+                        <a href="https://hal.science/hal-04565370v3" class="pub-link" target="_blank" rel="noopener">[HAL]</a>
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[PDF]</a>
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[Slides]</a>
                     </div>
                 </div>
 
+                <h3>Reports</h3>
                 <div class="publication">
-                    <div class="pub-title">Previous Conference Work: Building on Foundational Concepts</div>
-                    <div class="pub-authors">Co-Author 1, <strong>Your Name</strong></div>
-                    <div class="pub-venue">Proceedings of [Conference Name] (CONF'23)</div>
-                    <span class="pub-year">2023</span>
+                    <div class="pub-title">La gouvernance des plans-plages de Gironde et des Landes à l'aune des repositionnements locaux et nationaux</div>
+                    <div class="pub-authors">C. <span class="surname">Gille</span>, P. <span class="surname">Mikulovic</span>, <strong>A. F. <span class="surname">Rossignol</span></strong>, A. <span class="surname">Roulet</span>, C. <span class="surname">Widua</span></div>
+                    <div class="pub-venue"><span class="straight">Technical report</span></div>
+                    <span class="pub-year">2025</span>
                     <div class="pub-links">
-                        <a href="#" class="pub-link">[PDF]</a>
-                        <a href="#" class="pub-link">[Poster]</a>
+                        <a href="https://hal.science/hal-05120831v1" class="pub-link" target="_blank" rel="noopener">[HAL]</a>
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[PDF]</a>
                     </div>
                 </div>
 
                 <h3>Preprints & Under Review</h3>
                 <div class="publication">
-                    <div class="pub-title">Recent Work: Exploring New Directions in Research</div>
-                    <div class="pub-authors"><strong>Your Name</strong>, Co-Author 1, Co-Author 2</div>
-                    <div class="pub-venue">arXiv preprint arXiv:XXXX.XXXXX</div>
+                    <div class="pub-title">Addressing unobserved covariates in species distribution models: inferential impacts and mitigation via joint species distribution models</div>
+                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong>, F. <span class="surname">Gosselin</span></div>
+                    <div class="pub-venue">EcoEvoRxiv<span class="straight"> preprint</span></div>
+                    <span class="pub-year">2026</span>
+                    <div class="pub-links">
+                        <a href="pdf/2026-ecoevorxiv.pdf" class="pub-link" target="_blank" rel="noopener">[PDF]</a>
+                        <a href="https://doi.org/10.32942/X2RS9S" class="pub-link" target="_blank" rel="noopener">[DOI]</a>
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[Code]</a>
+                    </div>
+                </div>
+
+                <div class="publication">
+                    <div class="pub-title">Resource competition between buoyancy-regulating and sinking phytoplankton species along a stratified water column</div>
+                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong>, S. <span class="surname">Wollrab</span></div>
+                    <div class="pub-venue">bioRxiv<span class="straight"> preprint</span></div>
+                    <span class="pub-year">2025</span>
+                    <div class="pub-links">
+                        <a href="pdf/2025-biorxiv.pdf" class="pub-link" target="_blank" rel="noopener">[PDF]</a>
+                        <a href="https://doi.org/10.1101/2025.10.16.682797" class="pub-link" target="_blank" rel="noopener">[DOI]</a>
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[Code]</a>
+                    </div>
+                </div>
+
+                <h3>In Preparation</h3>
+                <div class="publication">
+                    <div class="pub-title">An unsuccessful invader can drive shifts in phytoplankton community composition through alternative stable states in a vertically heterogeneous environment</div>
+                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong>, S. <span class="surname">Wollrab</span></div>
+                    <div class="pub-venue"><span class="straight">Manuscript in preparation</span></div>
+                </div>
+
+                <div class="publication">
+                    <div class="pub-title">Theoretical comparison of planktonic food web models incorporating a mycoloop</div>
+                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong></div>
+                    <div class="pub-venue"><span class="straight">Manuscript in preparation</span></div>
+                </div>
+
+                <div class="publication">
+                    <div class="pub-title">Ignoring spatial structures affects inferential performance of GLMMs for count data involving spatially-varying coefficients</div>
+                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong>, F. <span class="surname">Gosselin</span></div>
+                    <div class="pub-venue"><span class="straight">Manuscript in preparation</span></div>
+                </div>
+
+                <div class="publication">
+                    <div class="pub-title">A theoretical probabilistic framework to consistently assess rockfall hazards</div>
+                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong>, R. <span class="surname">Martin</span>, M. <span class="surname">Marchelli</span>, N. <span class="surname">Eckert</span>, F. <span class="surname">Bourrier</span></div>
+                    <div class="pub-venue"><span class="straight">Manuscript in preparation</span></div>
+                </div>
+
+                <div class="publication">
+                    <div class="pub-title">Consistent parameter estimation for Gaussian random fields with Matérn covariance on Euclidean spaces [0,&nbsp;1)<sup><span style="font-style: italic;">d</span></sup> with <span style="font-style: italic;">d</span>&nbsp;≥&nbsp;5 under fixed-domain asymptotics</div>
+                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong></div>
+                    <div class="pub-venue"><span class="straight">Manuscript in preparation</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Communications Tab -->
+        <div id="communications" class="tab-content">
+            <div class="cv-section">
+                <h2>Communications</h2>
+
+                <h3 hidden>Invited Talks</h3>
+                <div class="publication" hidden>
+                    <div class="pub-title">Talk title goes here</div>
+                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong></div>
+                    <div class="pub-venue">Seminar / Workshop name, Host institution, City (Country)</div>
+                    <span class="pub-year">2025</span>
+                </div>
+
+                <h3>Conference Talks</h3>
+                <div class="publication">
+                    <div class="pub-title">Transient Dynamics in the Vertical Competition Between Sinking and Buoyancy-Regulating Phytoplankton Species Under Environmental Change</div>
+                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong>, S. <span class="surname">Wollrab</span></div>
+                    <div class="pub-venue"><span class="straight">ASLO–SIL Joint Meeting · Aquatic Confluence: Science, People, Knowledge, Montreal (Canada)</span></div>
+                    <span class="pub-year">2026</span>
+                    <div class="pub-links">
+                        <a href="https://hal.inrae.fr/hal-05622687v1" class="pub-link" target="_blank" rel="noopener">[HAL]</a>
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[Slides]</a>
+                    </div>
+                </div>
+
+                <div class="publication">
+                    <div class="pub-title">Towards a novel quantitative approach for rockfall hazard assessment</div>
+                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong>, R. <span class="surname">Martin</span>, F. <span class="surname">Bourrier</span></div>
+                    <div class="pub-venue"><span class="straight">International Symposium on Landslides (ISL) 2024, Chambéry (France)</span></div>
                     <span class="pub-year">2024</span>
                     <div class="pub-links">
-                        <a href="#" class="pub-link">[arXiv]</a>
+                        <a href="https://hal.science/hal-04565370v3" class="pub-link" target="_blank" rel="noopener">[HAL]</a>
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[Slides]</a>
+                    </div>
+                </div>
+
+                <h3>Posters</h3>
+                <div class="publication">
+                    <div class="pub-title">Sinking vs. Buoyancy! Interspecific Competition for Light and Nutrient between Sinking and Buoyancy-Regulating Phytoplankton Species along a Stratified Water Column</div>
+                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong>, S. <span class="surname">Wollrab</span></div>
+                    <div class="pub-venue"><span class="straight">Ecology &amp; Behaviour 2025 Meeting, 17th Edition, Montpellier (France)</span></div>
+                    <span class="pub-year">2025</span>
+                    <div class="pub-links">
+                        <a href="https://hal.science/hal-05247479v1" class="pub-link" target="_blank" rel="noopener">[HAL]</a>
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[Poster]</a>
+                    </div>
+                </div>
+
+                <h3 hidden>Outreach</h3>
+                <div class="publication" hidden>
+                    <div class="pub-title">Public outreach / vulgarisation title</div>
+                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong></div>
+                    <div class="pub-venue">Venue or audience, City (Country)</div>
+                    <span class="pub-year">2025</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Packages Tab -->
+        <div id="packages" class="tab-content">
+            <div class="cv-section">
+                <h2>Packages</h2>
+
+                <h3 hidden>R Packages</h3>
+                <div class="publication" hidden>
+                    <div class="pub-title">jsdmINLA</div>
+                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong></div>
+                    <div class="pub-venue"><span class="straight">R package for fitting Joint Species Distribution Models (JSDMs) with Integrated Nested Laplace Approximation (INLA).</span></div>
+                    <div class="pub-links">
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[GitHub]</a>
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[CRAN]</a>
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[Docs]</a>
+                    </div>
+                </div>
+
+                <h3 hidden>Python Packages</h3>
+                <div class="publication" hidden>
+                    <div class="pub-title">package-name</div>
+                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong></div>
+                    <div class="pub-venue"><span class="straight">Short description of what the package does, written in one sentence.</span></div>
+                    <div class="pub-links">
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[GitHub]</a>
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[PyPI]</a>
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[Docs]</a>
                     </div>
                 </div>
             </div>
@@ -706,7 +1162,7 @@
         <!-- Research Areas Tab -->
         <div id="research" class="tab-content">
             <div class="cv-section">
-                <h2>Research Areas</h2>
+                <h2>Research</h2>
                 <p style="margin-bottom: 2rem; font-size: 1.1rem; color: var(--text-light);">
                     My research spans multiple interconnected areas, with a focus on [overarching theme]. 
                     Below are the primary domains of my work:
@@ -771,31 +1227,47 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 [Arthur F. Rossignol]. All rights reserved.</p>
-            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Last updated: December 2024</p>
+            <p>&copy;2026 Arthur F. <span class="surname">Rossignol</span>. All rights reserved.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Last updated: June 2026</p>
         </div>
     </footer>
 
     <script>
-        // Tab functionality
+        // Tab functionality — keeps the active tab in sync with the URL hash,
+        // so reloading the page (or sharing the URL) restores the same tab.
         const tabButtons = document.querySelectorAll('.tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
+        const validTabs = Array.from(tabButtons).map(b => b.dataset.tab);
+
+        function activateTab(targetTab, { updateHash = true, smoothScroll = true } = {}) {
+            if (!validTabs.includes(targetTab)) targetTab = 'home';
+            tabButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === targetTab));
+            tabContents.forEach(content => content.classList.toggle('active', content.id === targetTab));
+            if (updateHash) {
+                const newHash = targetTab === 'home' ? '' : '#' + targetTab;
+                if (window.location.hash !== newHash) {
+                    history.replaceState(null, '', newHash || window.location.pathname);
+                }
+            }
+            if (smoothScroll) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
 
         tabButtons.forEach(button => {
             button.addEventListener('click', () => {
-                const targetTab = button.dataset.tab;
-
-                // Remove active class from all buttons and contents
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                tabContents.forEach(content => content.classList.remove('active'));
-
-                // Add active class to clicked button and corresponding content
-                button.classList.add('active');
-                document.getElementById(targetTab).classList.add('active');
-
-                // Smooth scroll to top of content
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                activateTab(button.dataset.tab);
             });
+        });
+
+        // On initial load: pick up the tab from the URL hash if present.
+        const initialTab = (window.location.hash || '#home').slice(1);
+        activateTab(initialTab, { smoothScroll: false });
+
+        // Browser back/forward — keep the displayed tab in sync.
+        window.addEventListener('hashchange', () => {
+            const tab = (window.location.hash || '#home').slice(1);
+            activateTab(tab, { updateHash: false, smoothScroll: false });
         });
 
         // Smooth reveal animation for cards on scroll
