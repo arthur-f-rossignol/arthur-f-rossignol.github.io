@@ -558,19 +558,34 @@
         }
 
         .cv-entry {
-            margin-bottom: 1.1rem;
+            margin-bottom: 1.4rem;
             padding-left: 0;
+            display: grid;
+            grid-template-columns: 115px 1fr;
+            column-gap: 1.5rem;
+            align-items: baseline;
+        }
+
+        /* Make sure the [hidden] attribute still wins against display: grid. */
+        .cv-entry[hidden],
+        [hidden] {
+            display: none;
+        }
+
+        .cv-entry > * {
+            grid-column: 2;
         }
 
         .cv-entry-date {
-            display: block;
+            grid-column: 1;
+            grid-row: 1;
             font-size: 0.82rem;
             color: var(--accent);
             font-weight: 500;
             letter-spacing: 0.04em;
             font-variant-numeric: tabular-nums;
-            margin-bottom: 0.15rem;
             text-transform: uppercase;
+            align-self: baseline;
         }
 
         .cv-entry-title {
@@ -582,9 +597,20 @@
 
         .cv-entry-org {
             color: var(--text-light);
-            font-style: italic;
             font-size: 0.92rem;
             margin-top: 0.1rem;
+        }
+
+        .cv-entry-org a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px dotted var(--border);
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .cv-entry-org a:hover {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
         }
 
         .cv-entry-desc {
@@ -592,6 +618,25 @@
             font-size: 0.9rem;
             color: var(--text);
             line-height: 1.6;
+        }
+
+        .cv-entry-supervision {
+            margin-top: 0.15rem;
+            font-style: italic;
+            font-size: 0.8rem;
+            color: var(--accent-soft);
+        }
+
+        .cv-entry-title-link {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px solid var(--border);
+            transition: border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .cv-entry-title-link:hover {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
         }
 
         /* Publications — classical academic list */
@@ -869,13 +914,13 @@
                 <div class="cv-entry cv-entry-with-logo cv-entry-with-logo--lg">
                     <img class="cv-entry-logo cv-entry-logo--lg" src="logos/ministere-agriculture.png" alt="French Ministry of Agriculture" style="height: 72px; max-width: 145px;" />
                     <div class="cv-entry-title">Engineer Civil Servant (‘State Engineer of the Bridges, Waters and Forests’)</div>
-                    <div class="cv-entry-org">French Ministry of Agriculture</div>
-                    <div class="cv-entry-date">2025 - Present</div>
+                    <div class="cv-entry-org"><a href="https://agriculture.gouv.fr" target="_blank" rel="noopener">French Ministry of Agriculture</a></div>
+                    <div class="cv-entry-date">2025 – …</div>
                 </div>
                 <div class="cv-entry cv-entry-with-logo cv-entry-with-logo--lg">
                     <img class="cv-entry-logo cv-entry-logo--lg" src="logos/ministere-environnement.png" alt="French Ministry of Ecological Transition" />
                     <div class="cv-entry-title">Engineer Civil Servant Trainee</div>
-                    <div class="cv-entry-org">French Ministry of Ecological Transition</div>
+                    <div class="cv-entry-org"><a href="https://www.ecologie.gouv.fr" target="_blank" rel="noopener">French Ministry of Ecological Transition</a></div>
                     <div class="cv-entry-date">2023 - 2025</div>
                 </div>
 
@@ -886,9 +931,10 @@
                         <img src="logos/orleans.png" alt="Université d'Orléans" />
                     </div>
                     <div class="cv-entry-title">PhD candidate</div>
-                    <div class="cv-entry-org">INRAE & Université d'Orléans</div>
+                    <div class="cv-entry-org"><a href="https://www.inrae.fr/en" target="_blank" rel="noopener">INRAE</a> & <a href="https://www.univ-orleans.fr/en" target="_blank" rel="noopener">Université d'Orléans</a></div>
                     <div class="cv-entry-date">2025 - 2028</div>
-                    <div class="cv-entry-desc">Dissertation: "Methodological Improvements for Statistical (Joint) Species Distribution Models Applied to the Study of Relationships Between Saproxylic Biodiversity and Deadwood Metrics in French Forests"<br>Advisor: Dr. Frédéric <span class="surname">Gosselin</span></div>
+                    <div class="cv-entry-desc">Dissertation: "Methodological Improvements for Statistical (Joint) Species Distribution Models Applied to the Study of Relationships Between Saproxylic Biodiversity and Deadwood Metrics in French Forests"</div>
+                    <div class="cv-entry-supervision">Supervisor: Dr. Frédéric <span class="surname">Gosselin</span></div>
                 </div>
                 <div class="cv-entry cv-entry-with-logo cv-entry-with-logo--wide">
                     <div class="cv-entry-logos">
@@ -896,32 +942,58 @@
                         <img src="logos/enpc.png" alt="ENPC" style="height: 75px; max-width: 155px;" />
                     </div>
                     <div class="cv-entry-title">Executive Master (public administration)</div>
-                    <div class="cv-entry-org">AgroParisTech (Palaiseau, France) & ENPC (Champs-sur-Marne, France)</div>
+                    <div class="cv-entry-org"><a href="https://www.agroparistech.fr/en" target="_blank" rel="noopener">AgroParisTech</a> (Palaiseau, France) & <a href="https://ecoledesponts.fr/en" target="_blank" rel="noopener">ENPC</a> (Champs-sur-Marne, France)</div>
                     <div class="cv-entry-date">2025</div>
                 </div>
                 <div class="cv-entry cv-entry-with-logo">
                     <img class="cv-entry-logo" src="logos/paris-saclay.png" alt="Université Paris-Saclay" />
                     <div class="cv-entry-title">Master's degree (conservation ecology & ecological modeling)</div>
-                    <div class="cv-entry-org">Faculty of Sciences, University Paris-Saclay (Orsay, France)</div>
+                    <div class="cv-entry-org">Faculty of Sciences, <a href="https://www.universite-paris-saclay.fr/en" target="_blank" rel="noopener">University Paris-Saclay</a> (Orsay, France)</div>
                     <div class="cv-entry-date">2024</div>
                 </div>
                 <div class="cv-entry cv-entry-with-logo cv-entry-with-logo--lg">
                     <img class="cv-entry-logo cv-entry-logo--lg" src="logos/polytechnique.png" alt="École polytechnique" />
                     <div class="cv-entry-title">Master's degree & French engineer's degree (chemistry & biology)</div>
-                    <div class="cv-entry-org">École polytechnique, IP Paris (Palaiseau, France)</div>
+                    <div class="cv-entry-org"><a href="https://www.polytechnique.edu/en" target="_blank" rel="noopener">École polytechnique</a>, <a href="https://www.ip-paris.fr/en" target="_blank" rel="noopener">IP Paris</a> (Palaiseau, France)</div>
                     <div class="cv-entry-date">2023</div>
                 </div>
 
                 <h3>Honors & Awards</h3>
                 <div class="cv-entry">
                     <div class="cv-entry-title">5-year graduate fellowship (IPEF, 180 k€)</div>
-                    <div class="cv-entry-org">French Ministry of Agriculture</div>
+                    <div class="cv-entry-org"><a href="https://agriculture.gouv.fr" target="_blank" rel="noopener">French Ministry of Agriculture</a></div>
                     <div class="cv-entry-date">2023</div>
                 </div>
                 <div class="cv-entry">
                     <div class="cv-entry-title">3-year undergraduate scholarship (EOX, 30 k€)</div>
-                    <div class="cv-entry-org">École polytechnique</div>
+                    <div class="cv-entry-org"><a href="https://www.polytechnique.edu/en" target="_blank" rel="noopener">École polytechnique</a></div>
                     <div class="cv-entry-date">2020</div>
+                </div>
+
+                <h3>Supervision and Advising</h3>
+                <div class="cv-entry">
+                    <div class="cv-entry-title"><a href="pdf/proposals/postdoc-2026-2027.pdf" class="cv-entry-title-link" target="_blank" rel="noopener">Postdoctoral position</a></div>
+                    <div class="cv-entry-supervision">Co-advised with Dr. Frédéric <span class="surname">Gosselin</span> and Dr. Christophe <span class="surname">Bouget</span></div>
+                    <div class="cv-entry-date">2026 – 2027</div>
+                </div>
+                <div class="cv-entry">
+                    <div class="cv-entry-title"><a href="pdf/proposals/psc-2026-2027.pdf" class="cv-entry-title-link" target="_blank" rel="noopener">Bachelor research group project</a></div>
+                    <div class="cv-entry-supervision">Co-supervised with Dr. Frédéric <span class="surname">Gosselin</span></div>
+                    <div class="cv-entry-org"><a href="https://www.polytechnique.edu/en" target="_blank" rel="noopener">École polytechnique</a></div>
+                    <div class="cv-entry-date">2026 – 2027</div>
+                </div>
+                <div class="cv-entry">
+                    <div class="cv-entry-title">Master thesis — Karl <span class="surname">Gilles</span></div>
+                    <div class="cv-entry-supervision">Co-supervised with Dr. Frédéric <span class="surname">Gosselin</span>, Dr. Irene <span class="surname">Teixidor</span> <span class="surname">Toneu</span>, and Dr. Arnaud <span class="surname">Goulpeau</span></div>
+
+                    <div class="cv-entry-org"><a href="https://welcome.univ-lorraine.fr/en/" target="_blank" rel="noopener">Université de Lorraine</a></div>
+                    <div class="cv-entry-date">2026</div>
+                </div>
+                <div class="cv-entry">
+                    <div class="cv-entry-title"><a href="pdf/proposals/psc-2024-2025.pdf" class="cv-entry-title-link" target="_blank" rel="noopener">Bachelor research group project</a></div>
+                    <div class="cv-entry-supervision">Co-supervised with Dr. Frédéric <span class="surname">Gosselin</span></div>
+                    <div class="cv-entry-org"><a href="https://www.polytechnique.edu/en" target="_blank" rel="noopener">École polytechnique</a></div>
+                    <div class="cv-entry-date">2024 – 2025</div>
                 </div>
 
                 <h3 hidden>Teaching</h3>
@@ -945,7 +1017,7 @@
                 <div class="cv-entry">
                     <div class="cv-entry-title">Journal Reviewer</div>
                     <div class="cv-entry-org">PCI Ecology · Journal of Applied Ecology · Ecological Applications</div>
-                    <div class="cv-entry-date">2024 – Present</div>
+                    <div class="cv-entry-date">2024 – …</div>
                 </div>
             </div>
         </div>
@@ -1244,6 +1316,7 @@
         <div class="container">
             <p>&copy;2026 Arthur F. <span class="surname">Rossignol</span>. All rights reserved.</p>
             <p style="margin-top: 0.5rem; font-size: 0.9rem;">Last updated: June 2026</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.6;">Set in Inter · Built with HTML &amp; CSS</p>
         </div>
     </footer>
 
