@@ -666,10 +666,28 @@
         }
 
         .pub-venue {
+            display: inline;
             color: var(--text-light);
             font-style: italic;
             font-size: 0.93rem;
-            margin-bottom: 0.4rem;
+        }
+
+        /* Year flows inline right after the venue, on the same line. */
+        .pub-venue + .pub-year::before {
+            content: ' · ';
+            font-style: normal;
+            color: var(--text-light);
+        }
+
+        .pub-venue + .pub-year {
+            margin-left: 0;
+        }
+
+        /* Restore the visual gap that pub-venue's margin-bottom used to give
+           between the venue line and the links row below. */
+        .pub-year + .pub-links,
+        .pub-venue + .pub-links {
+            margin-top: 0.45rem;
         }
 
         .pub-venue .straight {
@@ -1036,12 +1054,25 @@
 
                 <h3>Journal Articles</h3>
                 <div class="publication">
+                    <div class="pub-title">Resource competition between buoyancy-regulating and sinking phytoplankton species along a stratified water column</div>
+                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong>, S. <span class="surname">Wollrab</span></div>
+                    <div class="pub-venue">Oikos</div>
+                    <span class="pub-year">2026</span>
+                    <div class="pub-links">
+                        <a href="pdf/2026-oikos.pdf" class="pub-link" target="_blank" rel="noopener">[PDF]</a>
+                        <a href="https://doi.org/10.1101/2025.10.16.682797" class="pub-link" target="_blank" rel="noopener">[DOI]</a>
+                        <a href="peer-review/2026-oikos.pdf" class="pub-link" target="_blank" rel="noopener">[Peer-Review]</a>
+                        <a href="#" class="pub-link" target="_blank" rel="noopener">[Code]</a>
+                    </div>
+                </div>
+
+                <div class="publication">
                     <div class="pub-title">Synthesis of substituted cyclic amines from protected amino acids using oxidative decarboxylation and alkylation</div>
                     <div class="pub-authors">D. <span class="surname">Corbisiero</span>, <strong>A. F. <span class="surname">Rossignol</span></strong>, F. <span class="surname">Calogero</span>, A. <span class="surname">Gualandi</span>, E. <span class="surname">Pinosa</span>, L. <span class="surname">Sensoli</span>, P. <span class="surname">Ronchi</span>, P. G. <span class="surname">Cozzi</span></div>
                     <div class="pub-venue">Asian Journal of Organic Chemistry<span class="straight">, </span>15<span class="straight">(2), e70319</span></div>
                     <span class="pub-year">2026</span>
                     <div class="pub-links">
-                        <a href="pdf/2026-ajoc.pdf" class="pub-link" target="_blank" rel="noopener">[PDF]</a>
+                        <a href="https://aces.onlinelibrary.wiley.com/doi/pdf/10.1002/ajoc.70319" class="pub-link" target="_blank" rel="noopener">[PDF]</a>
                         <a href="https://doi.org/10.1002/ajoc.70319" class="pub-link" target="_blank" rel="noopener">[DOI]</a>
                         <a href="peer-review/2026-ajoc.pdf" class="pub-link" target="_blank" rel="noopener">[Peer-Review]</a>
                         <a href="#" class="pub-link" target="_blank" rel="noopener">[Code]</a>
@@ -1089,6 +1120,16 @@
 
                 <h3>Reports</h3>
                 <div class="publication">
+                    <div class="pub-title">Les outils sylvo-climatiques dans les politiques publiques forestières : comment orienter l'action en forêt face au changement climatique ?</div>
+                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong></div>
+                    <div class="pub-venue"><span class="straight">Technical report</span></div>
+                    <span class="pub-year">2025</span>
+                    <div class="pub-links">
+                        <a href="pdf/reports/2025-outils-sylvo-climatiques.pdf" class="pub-link" target="_blank" rel="noopener">[PDF]</a>
+                    </div>
+                </div>
+
+                <div class="publication">
                     <div class="pub-title">La gouvernance des plans-plages de Gironde et des Landes à l'aune des repositionnements locaux et nationaux</div>
                     <div class="pub-authors">C. <span class="surname">Gille</span>, P. <span class="surname">Mikulovic</span>, <strong>A. F. <span class="surname">Rossignol</span></strong>, A. <span class="surname">Roulet</span>, C. <span class="surname">Widua</span></div>
                     <div class="pub-venue"><span class="straight">Technical report</span></div>
@@ -1108,18 +1149,6 @@
                     <div class="pub-links">
                         <a href="pdf/2026-ecoevorxiv.pdf" class="pub-link" target="_blank" rel="noopener">[PDF]</a>
                         <a href="https://doi.org/10.32942/X2RS9S" class="pub-link" target="_blank" rel="noopener">[DOI]</a>
-                        <a href="#" class="pub-link" target="_blank" rel="noopener">[Code]</a>
-                    </div>
-                </div>
-
-                <div class="publication">
-                    <div class="pub-title">Resource competition between buoyancy-regulating and sinking phytoplankton species along a stratified water column</div>
-                    <div class="pub-authors"><strong>A. F. <span class="surname">Rossignol</span></strong>, S. <span class="surname">Wollrab</span></div>
-                    <div class="pub-venue">bioRxiv<span class="straight"> preprint</span></div>
-                    <span class="pub-year">2025</span>
-                    <div class="pub-links">
-                        <a href="pdf/2025-biorxiv.pdf" class="pub-link" target="_blank" rel="noopener">[PDF]</a>
-                        <a href="https://doi.org/10.1101/2025.10.16.682797" class="pub-link" target="_blank" rel="noopener">[DOI]</a>
                         <a href="#" class="pub-link" target="_blank" rel="noopener">[Code]</a>
                     </div>
                 </div>
